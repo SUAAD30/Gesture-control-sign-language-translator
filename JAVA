@@ -1,0 +1,29 @@
+const video = document.getElementById('video');
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
+const translationDisplay = document.getElementById('translation');
+
+let mediaStream = null;
+
+async function startCamera() {
+    try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = mediaStream;
+        translationDisplay.textContent = 'Camera is running...';
+        // Placeholder for starting the translation process
+    } catch (error) {
+        console.error('Error accessing the camera: ', error);
+        translationDisplay.textContent = 'Error accessing camera.';
+    }
+}
+
+function stopCamera() {
+    if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+        translationDisplay.textContent = 'Camera stopped.';
+    }
+}
+
+startButton.addEventListener('click', startCamera);
+stopButton.addEventListener('click', stopCamera);
